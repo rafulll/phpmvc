@@ -1,0 +1,95 @@
+<?php
+//DaoGeral
+require_once PATH_APP."/models/DAO/Dao.php";
+//Model
+require_once PATH_APP."/models/dados/Usuario.php";
+
+class UserDAO extends Dao {
+    public static $v = 1;
+    public function atualizar($obj) {
+        
+    }
+
+    public function login($id, $senha) {
+        try {
+            $sql = "SELECT * FROM tb_usuario WHERE login = :identificador AND senha = :senha";
+            $rq = $this->pdo->prepare($sql);
+            $rq->bindValue(":identificador", $id);
+            $rq->bindValue(":senha", $senha);
+            $rq->execute();        
+                
+            
+            
+            if($rq->rowCount() > 0){
+                $result = array();
+            }else{
+                $result = null; 
+            }
+           
+
+            $result =  $rq->fetchAll(); 
+            //var_dump($result);
+            foreach ($result as $r) {
+                if($r['ativo'] == 0){
+                    echo "banido";
+                    return;
+                }else{
+                    array_push($result, new Usuario($r['id'],$r['nome'],$r['tb_tipo_usuario_id'],$r['login'],$r['senha'],$r['ativo']) );
+                }
+                
+            }
+            
+                
+            //var_dump($result);
+            
+        } catch (Exception $ex) {
+
+        }
+        
+        return $result;
+        //return $count;
+    }
+
+    public function buscarTodos() {
+      
+    }
+
+    public function excluir($id) {
+        
+    }
+    public function buscar($id) {
+        
+    }
+
+    public function inserir($obj) {
+        
+        if(!$obj){
+            echo "Alguma coisa deu errado";
+            return;
+        }
+            $sql_v = "SELECT login FROM tb_usuario WHERE login = ?";
+            $rqv = $this->pdo->prepare($sql_v);
+            $rqv->bindValue(1,$obj[1]);
+            $rqv->execute();
+            $row = $rqv->rowCount();
+            if($row > 0){
+                echo "usuario ja cadastrado";
+                return;
+            }
+            $sql = "INSERT INTO tb_usuario (nome, login, senha)  VALUES (?,?,?)";
+            $rq = $this->pdo->prepare($sql);
+            $rq->bindValue(1, $obj[0]);
+            $rq->bindValue(2, $obj[1]);
+            $rq->bindValue(3, $obj[2]);
+        try {
+            $rq->execute();      
+        }catch(PDOException $e){
+            echo "Impossivel inserir registro";
+            return;
+        }
+        //code...
+    echo "SUCESSO, ADICIONADO!";
+
+    }
+
+}
