@@ -4,11 +4,11 @@ require_once PATH_APP."/controllers/ControladorCore.php";
 class Paginas extends ControladorCore {
     
     public function index() {
-        $this->carregarView('homepage');
+        $this->renderView('homepage');
     }
     public function signin(){
         if(!isset($_SESSION['username']) && !isset($_SESSION['id'])){
-            $this->carregarView("v_login");
+            $this->renderView("v_login");
         }else{
             echo $_SESSION['id']; 
         }
@@ -16,69 +16,69 @@ class Paginas extends ControladorCore {
        
     }
     public function cadastro_prod(){
-        $this->carregarView('cadastro_produto');
+        $this->renderView('cadastro_produto');
     }
     public function add_prod(){
         if(!isset($_POST['nome']) || !isset($_POST['valor_compra']) || !isset($_POST['valor_venda'])){
             
-            $this->carregarView('cadastro_produto');
+            $this->renderView('cadastro_produto');
             return;
         }else{
-            $this->carregarModelo("Produto");
-            $this->carregarDAO("ProdutoDao");
+            $this->importModel("Produto");
+            $this->importDao("ProdutoDao");
             $dados = array();
           array_push($dados, $_POST['nome']);
           array_push($dados, $_POST['valor_compra']);
           array_push($dados, $_POST['valor_venda']);
             $ins = (new ProdutoDAO())->inserir($dados);
-            $this->addDadosPagina('resultado',$ins);
-            $this->carregarView('cadastro_produto');
+            $this->sendResponse('resultado',$ins);
+            $this->renderView('cadastro_produto');
         }
     }
     public function vProdutos(){
        
-        $this->carregarModelo("Produto");
-        $this->carregarDAO("ProdutoDao");
-        $this->carregarDAO("VendaDAO");
+        $this->importModel("Produto");
+        $this->importDao("ProdutoDao");
+        $this->importDao("VendaDAO");
        
         
         $venda = (new VendaDAO())->buscarTodos();
         $produtos = (new ProdutoDao())->buscarTodos();
        var_dump($produtos);
-        //$this->addDadosPagina("usuario", $_POST['cliente']);
-        $this->addDadosPagina("produtos", $produtos);
-        $this->addDadosPagina("venda", $venda);
+        //$this->sendResponse("usuario", $_POST['cliente']);
+        $this->sendResponse("produtos", $produtos);
+        $this->sendResponse("venda", $venda);
 
-        $this->carregarView('vprod');
+        $this->renderView('vprod');
     }
-    public function detalhar_venda(){
-            $this->carregarDAO("ProdutoDao");
-            $this->carregarDAO("VendaDAO");
-            $this->carregarDAO("ItemVendaDAO");
+    public function details(){
+            $this->importDao("ProdutoDao");
+            $this->importDao("VendaDAO");
+            $this->importDao("ItemVendaDAO");
             if(!isset($_POST['venda'])){
                 echo "Nenhuma venda especificada";
                 return;
             }else{
                 $venda = (new VendaDAO())->buscar($_POST['venda']);
                 $itens_venda = (new ItemVendaDAO())->buscar($_POST['venda']);
-                $this->addDadosPagina('venda', $venda);
-                $this->addDadosPagina('itens', $itens_venda);
+                $this->sendResponse('venda', $venda);
+                $this->sendResponse('itens', $itens_venda);
                 $prod = (new ProdutoDao())->buscarTodos();
-                $this->addDadosPagina('prod', $prod);
-                $this->carregarView('details');
+                $this->sendResponse('prod', $prod);
+                $this->renderView('details');
             }
             
             
             $prod = (new ProdutoDao())->buscarTodos();
-            $this->addDadosPagina('prod', $prod);
-            $this->carregarView('details');
+            $this->sendResponse('prod', $prod);
+            $this->renderView('details');
     }
     public function cadastrar(){
-        $this->carregarView("cadastro");
+        $this->renderView("cadastro");
     }
     public function vender(){
 
-        $this->carregarView('nova_venda');
+        $this->renderView('nova_venda');
     }
     public function remover_item(){
         if(!isset($_POST['item']) || !isset($_POST['venda'])){
@@ -88,47 +88,47 @@ class Paginas extends ControladorCore {
         $dados = array();
         array_push($dados, $_POST['item']);
         array_push($dados, $_POST['venda']);
-        $this->carregarDAO("ItemVendaDAO");
-        $this->carregarDAO("UserDAO");
-        $this->carregarDAO("ProdutoDAO");
-        $this->carregarDAO("VendaDAO");
+        $this->importDao("ItemVendaDAO");
+        $this->importDao("UserDAO");
+        $this->importDao("ProdutoDAO");
+        $this->importDao("VendaDAO");
         $venda2 = (new ItemVendaDAO())->excluir($dados);
         $dao = (new UserDAO())->buscarTodos();
         $prod = (new ProdutoDAO())->buscarTodos();
         $venda = (new VendaDAO())->buscar($_POST['venda']);
         $itens    = (new ItemVendaDAO())->buscar($_POST['venda']);
 
-        $this->addDadosPagina('user', $dao);
-        $this->addDadosPagina('venda', $venda);
-        $this->addDadosPagina('prod', $prod);
-        $this->addDadosPagina('itens', $itens);
+        $this->sendResponse('user', $dao);
+        $this->sendResponse('venda', $venda);
+        $this->sendResponse('prod', $prod);
+        $this->sendResponse('itens', $itens);
 
-       //$this->addDadosPagina('sessao', $_POST['session']);
-        $this->carregarView('details');
+       //$this->sendResponse('sessao', $_POST['session']);
+        $this->renderView('details');
 
     }
     public function nova_venda(){
     
 
-        $this->carregarDAO('UserDAO');
-        $this->carregarDAO('ProdutoDAO');
-        $this->carregarDAO('VendaDAO');
-        $this->carregarModelo("Usuario");
-        $this->carregarModelo("Produto");
+        $this->importDao('UserDAO');
+        $this->importDao('ProdutoDAO');
+        $this->importDao('VendaDAO');
+        $this->importModel("Usuario");
+        $this->importModel("Produto");
         if(isset($_POST['cliente'])){
             $nova_venda = (new VendaDAO())->inserir($_POST['cliente']);
-            $this->addDadosPagina('info', 'Venda Criada, Selecione  e continue!');
+            $this->sendResponse('info', 'Venda Criada, Selecione  e continue!');
         }   
        
         $dao = (new UserDAO())->buscarTodos();
         $prod = (new ProdutoDAO())->buscarTodos();
         $venda  =(new VendaDAO())->buscarTodos();
 
-        $this->addDadosPagina('user', $dao);
-        $this->addDadosPagina('venda', $venda);
-        $this->addDadosPagina('produtos', $prod);
-       //$this->addDadosPagina('sessao', $_POST['session']);
-        $this->carregarView('nova_venda');
+        $this->sendResponse('user', $dao);
+        $this->sendResponse('venda', $venda);
+        $this->sendResponse('produtos', $prod);
+       //$this->sendResponse('sessao', $_POST['session']);
+        $this->renderView('nova_venda');
     }
 
 
@@ -137,22 +137,34 @@ class Paginas extends ControladorCore {
             echo "Não há itens para adicionar";
             return;
         }else{
-            $this->carregarDAO("ItemVendaDAO");
+            $this->importDao("ItemVendaDAO");
             $req = array();
             array_push($req, $_POST['venda']);
             array_push($req, $_POST['item']);
             $prod = (new ItemVendaDAO())->inserir($req);
-            $this->carregarDAO("ProdutoDao");
-            $this->carregarDAO("VendaDAO");
+            $this->importDao("ProdutoDao");
+            $this->importDao("VendaDAO");
             
             $venda = (new VendaDAO())->buscar($_POST['venda']);
             $itens_venda = (new ItemVendaDAO())->buscar($_POST['venda']);
             $prod = (new ProdutoDao())->buscarTodos();
-            $this->addDadosPagina('venda', $venda);
-            $this->addDadosPagina('itens', $itens_venda);
-            $this->addDadosPagina('prod', $prod);
+            $this->sendResponse('venda', $venda);
+            $this->sendResponse('itens', $itens_venda);
+            $this->sendResponse('prod', $prod);
           
-            $this->carregarView('details');
+            $this->renderView('details');
+        }
+    }
+    public function pagar(){
+        if(!isset($_POST['alt_venda'])){
+            echo "Como assim ? Traga dados...";
+            return;
+        }else{
+            $do = null;
+            $do = (new VendaDAO())->atualizar($_POST['alt_venda']);
+            if($do == null){
+                $this->sendResponse('code', $do);
+            }
         }
     }
     public function newuser(){
@@ -162,8 +174,8 @@ class Paginas extends ControladorCore {
             return;
         }
 
-        $this->carregarModelo("Usuario");
-        $this->carregarDAO('UserDAO');
+        $this->importModel("Usuario");
+        $this->importDao('UserDAO');
         
         
         $obj = array();
@@ -189,8 +201,8 @@ class Paginas extends ControladorCore {
         }else{
             $_SESSION['id'] = $_POST['username'];
             
-            $this->carregarModelo("Usuario");   
-            $this->carregarDAO('UserDAO');
+            $this->importModel("Usuario");   
+            $this->importDao('UserDAO');
             $dao = new UserDAO();
             
             
@@ -205,13 +217,13 @@ class Paginas extends ControladorCore {
                 }
                 if(isset($user[0]['nome'])){
                     $this->listar();
-                    // $this->addDadosPagina("produtos", $produtos);
-                    $this->addDadosPagina("user", $user[0]['nome']);
-                    $this->carregarView("v_produtos");
+                    // $this->sendResponse("produtos", $produtos);
+                    $this->sendResponse("user", $user[0]['nome']);
+                    $this->renderView("v_produtos");
                 }else{
                     $this->listar();
-                    $this->addDadosPagina("user", $user);
-                    $this->carregarView("v_produtos");
+                    $this->sendResponse("user", $user);
+                    $this->renderView("v_produtos");
                 }
                 
                
@@ -224,13 +236,13 @@ class Paginas extends ControladorCore {
         //if(!isset($_SESSION['id'])){
         //    echo "Precisa fazer login<br> <a href='javascript:history.go(-1)'>Voltar</a>";
         //}else{
-            $this->carregarModelo("Produto");
-            $this->carregarDAO("ProdutoDao");
+            $this->importModel("Produto");
+            $this->importDao("ProdutoDao");
         
             $produtos = (new ProdutoDao())->buscarTodos();
             
-            $this->addDadosPagina("produtos", $produtos);
-            $this->carregarView("v_produtos");
+            $this->sendResponse("produtos", $produtos);
+            $this->renderView("v_produtos");
         //}
         
         
@@ -244,15 +256,15 @@ class Paginas extends ControladorCore {
         if (isset($_POST["id"])) {
             $produtoBuscado = (new ProdutoDao())->buscar($_POST["id"]);
             
-            $this->addDadosPagina("produto", $produtoBuscado);
-            $this->carregarView("v_detalhar_produto");
+            $this->sendResponse("produto", $produtoBuscado);
+            $this->renderView("v_detalhar_produto");
             
         } else {
             echo "Informe todos os campos obrigatórios...";
         }
     }
     public function css(){
-        $this->carregarView("css");
+        $this->renderView("css");
     }
     public function sobre() {
         echo __FUNCTION__;

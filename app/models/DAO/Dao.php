@@ -5,7 +5,7 @@ abstract class Dao {
     
     public function __construct() {
         require PATH_APP."/config/banco.php";
-        $this->pdo = $conexaoBanco;
+        $this->pdo = $bdCon;
     }
     
     public abstract function inserir($obj);

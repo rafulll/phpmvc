@@ -4,15 +4,15 @@ class ControladorCore {
     
     private $dadosView = array();
     
-    protected function carregarModelo($nomeModelo) {
+    protected function importModel($nomeModelo) {
         require_once PATH_APP."/models/Dados/$nomeModelo.php";
     }
     
-    protected function carregarDAO($nomeDao) {
+    protected function importDao($nomeDao) {
         require_once PATH_APP."/models/DAO/$nomeDao.php";
     }
     
-    protected function carregarView($nomeView) {
+    protected function renderView($nomeView) {
         
         $dados = $this->dadosView;
         require_once PATH_APP."/views/v_header.php";
@@ -21,7 +21,7 @@ class ControladorCore {
         
     }
     
-    protected function addDadosPagina($nomeVariavel, $valor) {
+    protected function sendResponse($nomeVariavel, $valor) {
       return  $this->dadosView[$nomeVariavel] = $valor;
     }
 }

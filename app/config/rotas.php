@@ -19,7 +19,7 @@ $rotas["authenticate"] = array("rota"=>"/auth", "controller"=>"paginas", "acao"=
 $rotas["css"] = array("rota"=>"/css", "controller"=>"paginas", "acao"=>"css");
 //$rotas["newsell"] = array("rota"=>"/vender", "controller"=>"paginas", "acao"=>"vender");
 $rotas["novavenda"] = array("rota"=>"/nova_venda", "controller"=>"paginas", "acao"=>"nova_venda");
-$rotas["details"] = array("rota"=>"/nova_venda/details", "controller"=>"paginas", "acao"=>"detalhar_venda");
+$rotas["details"] = array("rota"=>"/nova_venda/details", "controller"=>"paginas", "acao"=>"details");
 
 
 //echo "<pre>".print_r($rotas, true)."</pre>";
