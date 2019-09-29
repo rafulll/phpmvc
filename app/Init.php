@@ -53,7 +53,7 @@ class Init {
         $urlTratada = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
         $segmentos = explode("/", $urlTratada);
         
-        array_shift($segmentos);// Remove o primeiro índice atual do array.
+        //array_shift($segmentos);// Remove o primeiro índice atual do array.
         array_shift($segmentos);// Remove o primeiro índice atual do array.
         
         // desconsiderar as posições vazias do array quando a url informada tiver uma barra no final.

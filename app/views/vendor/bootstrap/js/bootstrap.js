@@ -5,13 +5,13 @@
  */
 
 if (typeof jQuery === 'undefined') {
-  throw new Error('Bootstrap\'s JavaScript requires jQuery. jQuery must be included before Bootstrap\'s JavaScript.')
+  throw new Error('Bootstrap\'s JavaScript require_onces jQuery. jQuery must be included before Bootstrap\'s JavaScript.')
 }
 
 (function ($) {
   var version = $.fn.jquery.split(' ')[0].split('.')
   if ((version[0] < 2 && version[1] < 9) || (version[0] == 1 && version[1] == 9 && version[2] < 1) || (version[0] >= 4)) {
-    throw new Error('Bootstrap\'s JavaScript requires at least jQuery v1.9.1 but less than v4.0.0')
+    throw new Error('Bootstrap\'s JavaScript require_onces at least jQuery v1.9.1 but less than v4.0.0')
   }
 })(jQuery);
 
@@ -1411,7 +1411,7 @@ var Dropdown = function ($) {
    * Popper - https://popper.js.org
    */
   if (typeof Popper === 'undefined') {
-    throw new Error('Bootstrap dropdown require Popper.js (https://popper.js.org)');
+    throw new Error('Bootstrap dropdown require_once Popper.js (https://popper.js.org)');
   }
 
   /**
@@ -2973,7 +2973,7 @@ var Tooltip = function ($) {
    * Popper - https://popper.js.org
    */
   if (typeof Popper === 'undefined') {
-    throw new Error('Bootstrap tooltips require Popper.js (https://popper.js.org)');
+    throw new Error('Bootstrap tooltips require_once Popper.js (https://popper.js.org)');
   }
 
   /**

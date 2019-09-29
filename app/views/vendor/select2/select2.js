@@ -13,15 +13,15 @@
     // Node/CommonJS
     module.exports = function (root, jQuery) {
       if (jQuery === undefined) {
-        // require('jQuery') returns a factory that requires window to
+        // require_once('jQuery') returns a factory that require_onces window to
         // build a jQuery instance, we normalize how we use modules
-        // that require this pattern but the window provided is a noop
+        // that require_once this pattern but the window provided is a noop
         // if it's defined (how jquery works)
         if (typeof window !== 'undefined') {
-          jQuery = require('jquery');
+          jQuery = require_once('jquery');
         }
         else {
-          jQuery = require('jquery')(root);
+          jQuery = require_once('jquery')(root);
         }
       }
       factory(jQuery);
@@ -41,8 +41,8 @@
   if (jQuery && jQuery.fn && jQuery.fn.select2 && jQuery.fn.select2.amd) {
     var S2 = jQuery.fn.select2.amd;
   }
-var S2;(function () { if (!S2 || !S2.requirejs) {
-if (!S2) { S2 = {}; } else { require = S2; }
+var S2;(function () { if (!S2 || !S2.require_oncejs) {
+if (!S2) { S2 = {}; } else { require_once = S2; }
 /**
  * @license almond 0.3.1 Copyright (c) 2011-2014, The Dojo Foundation All Rights Reserved.
  * Available via the MIT or new BSD license.
@@ -53,7 +53,7 @@ if (!S2) { S2 = {}; } else { require = S2; }
 /*jslint sloppy: true */
 /*global setTimeout: false */
 
-var requirejs, require, define;
+var require_oncejs, require_once, define;
 (function (undef) {
     var main, req, makeMap, handlers,
         defined = {},
@@ -86,7 +86,7 @@ var requirejs, require, define;
         //Adjust any relative paths.
         if (name && name.charAt(0) === ".") {
             //If have a base name, try to normalize against it,
-            //otherwise, assume it is a top-level require that will
+            //otherwise, assume it is a top-level require_once that will
             //be relative to baseUrl in the end.
             if (baseName) {
                 name = name.split('/');
@@ -188,14 +188,14 @@ var requirejs, require, define;
         return name;
     }
 
-    function makeRequire(relName, forceSync) {
+    function makerequire_once(relName, forceSync) {
         return function () {
-            //A version of a require function that passes a moduleName
+            //A version of a require_once function that passes a moduleName
             //value for items that may need to
             //look up paths relative to the moduleName
             var args = aps.call(arguments, 0);
 
-            //If first arg is not require('string'), and there is only
+            //If first arg is not require_once('string'), and there is only
             //one arg, it is the array form without a callback. Insert
             //a null so that the following concat is correct.
             if (typeof args[0] !== 'string' && args.length === 1) {
@@ -294,8 +294,8 @@ var requirejs, require, define;
     }
 
     handlers = {
-        require: function (name) {
-            return makeRequire(name);
+        require_once: function (name) {
+            return makerequire_once(name);
         },
         exports: function (name) {
             var e = defined[name];
@@ -328,15 +328,15 @@ var requirejs, require, define;
         if (callbackType === 'undefined' || callbackType === 'function') {
             //Pull out the defined dependencies and pass the ordered
             //values to the callback.
-            //Default to [require, exports, module] if no deps
-            deps = !deps.length && callback.length ? ['require', 'exports', 'module'] : deps;
+            //Default to [require_once, exports, module] if no deps
+            deps = !deps.length && callback.length ? ['require_once', 'exports', 'module'] : deps;
             for (i = 0; i < deps.length; i += 1) {
                 map = makeMap(deps[i], relName);
                 depName = map.f;
 
                 //Fast path CommonJS standard dependencies.
-                if (depName === "require") {
-                    args[i] = handlers.require(name);
+                if (depName === "require_once") {
+                    args[i] = handlers.require_once(name);
                 } else if (depName === "exports") {
                     //CommonJS module spec 1.1
                     args[i] = handlers.exports(name);
@@ -349,7 +349,7 @@ var requirejs, require, define;
                            hasProp(defining, depName)) {
                     args[i] = callDep(depName);
                 } else if (map.p) {
-                    map.p.load(map.n, makeRequire(relName, true), makeLoad(depName), {});
+                    map.p.load(map.n, makerequire_once(relName, true), makeLoad(depName), {});
                     args[i] = defined[depName];
                 } else {
                     throw new Error(name + ' missing ' + depName);
@@ -377,7 +377,7 @@ var requirejs, require, define;
         }
     };
 
-    requirejs = require = req = function (deps, callback, relName, forceSync, alt) {
+    require_oncejs = require_once = req = function (deps, callback, relName, forceSync, alt) {
         if (typeof deps === "string") {
             if (handlers[deps]) {
                 //callback in this case is really relName
@@ -409,7 +409,7 @@ var requirejs, require, define;
             }
         }
 
-        //Support require(['a'])
+        //Support require_once(['a'])
         callback = callback || function () {};
 
         //If relName is a function, it is an errback handler,
@@ -426,7 +426,7 @@ var requirejs, require, define;
             //Using a non-zero value because of concern for what old browsers
             //do, and latest browsers "upgrade" to 4 if lower value is used:
             //http://www.whatwg.org/specs/web-apps/current-work/multipage/timers.html#dom-windowtimers-settimeout:
-            //If want a value immediately, use require('id') instead -- something
+            //If want a value immediately, use require_once('id') instead -- something
             //that works in almond on the global level, but not guaranteed and
             //unlikely to work in other AMD implementations.
             setTimeout(function () {
@@ -448,7 +448,7 @@ var requirejs, require, define;
     /**
      * Expose module registry for debugging and tooling
      */
-    requirejs._defined = defined;
+    require_oncejs._defined = defined;
 
     define = function (name, deps, callback) {
         if (typeof name !== 'string') {
@@ -474,7 +474,7 @@ var requirejs, require, define;
     };
 }());
 
-S2.requirejs = requirejs;S2.require = require;S2.define = define;
+S2.require_oncejs = require_oncejs;S2.require_once = require_once;S2.define = define;
 }
 }());
 S2.define("almond", function(){});
@@ -2109,8 +2109,8 @@ S2.define('select2/selection/eventRelay',[
 
 S2.define('select2/translation',[
   'jquery',
-  'require'
-], function ($, require) {
+  'require_once'
+], function ($, require_once) {
   function Translation (dict) {
     this.dict = dict || {};
   }
@@ -2133,7 +2133,7 @@ S2.define('select2/translation',[
 
   Translation.loadPath = function (path) {
     if (!(path in Translation._cache)) {
-      var translations = require(path);
+      var translations = require_once(path);
 
       Translation._cache[path] = translations;
     }
@@ -4523,7 +4523,7 @@ S2.define('select2/i18n/en',[],function () {
 });
 S2.define('select2/defaults',[
   'jquery',
-  'require',
+  'require_once',
 
   './results',
 
@@ -4557,7 +4557,7 @@ S2.define('select2/defaults',[
   './dropdown/closeOnSelect',
 
   './i18n/en'
-], function ($, require,
+], function ($, require_once,
 
              ResultsList,
 
@@ -4622,7 +4622,7 @@ S2.define('select2/defaults',[
       }
 
       if (options.query != null) {
-        var Query = require(options.amdBase + 'compat/query');
+        var Query = require_once(options.amdBase + 'compat/query');
 
         options.dataAdapter = Utils.Decorate(
           options.dataAdapter,
@@ -4631,7 +4631,7 @@ S2.define('select2/defaults',[
       }
 
       if (options.initSelection != null) {
-        var InitSelection = require(options.amdBase + 'compat/initSelection');
+        var InitSelection = require_once(options.amdBase + 'compat/initSelection');
 
         options.dataAdapter = Utils.Decorate(
           options.dataAdapter,
@@ -4693,7 +4693,7 @@ S2.define('select2/defaults',[
         options.dropdownCss != null ||
         options.adaptDropdownCssClass != null
       ) {
-        var DropdownCSS = require(options.amdBase + 'compat/dropdownCss');
+        var DropdownCSS = require_once(options.amdBase + 'compat/dropdownCss');
 
         options.dropdownAdapter = Utils.Decorate(
           options.dropdownAdapter,
@@ -4741,7 +4741,7 @@ S2.define('select2/defaults',[
         options.containerCss != null ||
         options.adaptContainerCssClass != null
       ) {
-        var ContainerCSS = require(options.amdBase + 'compat/containerCss');
+        var ContainerCSS = require_once(options.amdBase + 'compat/containerCss');
 
         options.selectionAdapter = Utils.Decorate(
           options.selectionAdapter,
@@ -4838,7 +4838,7 @@ S2.define('select2/defaults',[
       // Do a recursive check for options with children
       if (data.children && data.children.length > 0) {
         // Clone the data object if there are children
-        // This is required as we modify the object to remove any non-matches
+        // This is require_onced as we modify the object to remove any non-matches
         var match = $.extend(true, {}, data);
 
         // Check each child of the option
@@ -4919,11 +4919,11 @@ S2.define('select2/defaults',[
 });
 
 S2.define('select2/options',[
-  'require',
+  'require_once',
   'jquery',
   './defaults',
   './utils'
-], function (require, $, Defaults, Utils) {
+], function (require_once, $, Defaults, Utils) {
   function Options (options, $element) {
     this.options = options;
 
@@ -4934,7 +4934,7 @@ S2.define('select2/options',[
     this.options = Defaults.apply(this.options);
 
     if ($element && $element.is('input')) {
-      var InputCompat = require(this.get('amdBase') + 'compat/inputData');
+      var InputCompat = require_once(this.get('amdBase') + 'compat/inputData');
 
       this.options.dataAdapter = Utils.Decorate(
         this.options.dataAdapter,
@@ -6432,13 +6432,13 @@ S2.define('jquery.select2',[
   // Return the AMD loader configuration so it can be used outside of this file
   return {
     define: S2.define,
-    require: S2.require
+    require_once: S2.require_once
   };
 }());
 
   // Autoload the jQuery bindings
   // We know that all of the modules exist above this, so we're safe
-  var select2 = S2.require('jquery.select2');
+  var select2 = S2.require_once('jquery.select2');
 
   // Hold the AMD module references on the jQuery function that was just loaded
   // This allows Select2 to use the internal loader outside of this file, such

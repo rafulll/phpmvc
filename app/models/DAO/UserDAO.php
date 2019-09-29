@@ -51,7 +51,28 @@ class UserDAO extends Dao {
     }
 
     public function buscarTodos() {
-      
+        try{
+            $sql_user = "SELECT id, nome, login as l FROM tb_usuario";
+        $rqu = $this->pdo->prepare($sql_user);
+        $rqu->execute();
+        $row = $rqu->rowCount();
+        
+        if($row > 0){
+            $result = $rqu->fetchAll();
+            $usuarios = array();
+
+            foreach ($result as $key => $value) {
+                array_push($usuarios, new Usuario($value['id'], $value['nome'],null,  $value['l'], null,null));
+            }
+        }
+        else{
+            echo "não há usuarios.";
+        }
+        return $usuarios;
+    }catch(PDOException $e){
+        $e->getMessage();
+    }
+
     }
 
     public function excluir($id) {
@@ -67,6 +88,7 @@ class UserDAO extends Dao {
             echo "Alguma coisa deu errado";
             return;
         }
+        try {
             $sql_v = "SELECT login FROM tb_usuario WHERE login = ?";
             $rqv = $this->pdo->prepare($sql_v);
             $rqv->bindValue(1,$obj[1]);
@@ -81,7 +103,7 @@ class UserDAO extends Dao {
             $rq->bindValue(1, $obj[0]);
             $rq->bindValue(2, $obj[1]);
             $rq->bindValue(3, $obj[2]);
-        try {
+        
             $rq->execute();      
         }catch(PDOException $e){
             echo "Impossivel inserir registro";

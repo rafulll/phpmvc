@@ -13,9 +13,10 @@ class ControladorCore {
     }
     
     protected function carregarView($nomeView) {
+        
         $dados = $this->dadosView;
         require_once PATH_APP."/views/v_header.php";
-        require_once PATH_APP."/views/$nomeView.php";
+        require_once(PATH_APP."/views/$nomeView.php");
         require_once PATH_APP."/views/v_footer.php";
         
     }

@@ -1258,22 +1258,22 @@ function computeStyle(data, options) {
  * @param {String} requestedName - name of requested modifier
  * @returns {Boolean}
  */
-function isModifierRequired(modifiers, requestingName, requestedName) {
+function isModifierrequire_onced(modifiers, requestingName, requestedName) {
   var requesting = find(modifiers, function (_ref) {
     var name = _ref.name;
     return name === requestingName;
   });
 
-  var isRequired = !!requesting && modifiers.some(function (modifier) {
+  var isrequire_onced = !!requesting && modifiers.some(function (modifier) {
     return modifier.name === requestedName && modifier.enabled && modifier.order < requesting.order;
   });
 
-  if (!isRequired) {
+  if (!isrequire_onced) {
     var _requesting = '`' + requestingName + '`';
     var requested = '`' + requestedName + '`';
-    console.warn(requested + ' modifier is required by ' + _requesting + ' modifier in order to work, be sure to include it before ' + _requesting + '!');
+    console.warn(requested + ' modifier is require_onced by ' + _requesting + ' modifier in order to work, be sure to include it before ' + _requesting + '!');
   }
-  return isRequired;
+  return isrequire_onced;
 }
 
 /**
@@ -1285,7 +1285,7 @@ function isModifierRequired(modifiers, requestingName, requestedName) {
  */
 function arrow(data, options) {
   // arrow depends on keepTogether in order to work
-  if (!isModifierRequired(data.instance.modifiers, 'arrow', 'keepTogether')) {
+  if (!isModifierrequire_onced(data.instance.modifiers, 'arrow', 'keepTogether')) {
     return data;
   }
 
@@ -1493,7 +1493,7 @@ function flip(data, options) {
 
     var overflowsBoundaries = placement === 'left' && overflowsLeft || placement === 'right' && overflowsRight || placement === 'top' && overflowsTop || placement === 'bottom' && overflowsBottom;
 
-    // flip the variation if required
+    // flip the variation if require_onced
     var isVertical = ['top', 'bottom'].indexOf(placement) !== -1;
     var flippedVariation = !!options.flipVariations && (isVertical && variation === 'start' && overflowsLeft || isVertical && variation === 'end' && overflowsRight || !isVertical && variation === 'start' && overflowsTop || !isVertical && variation === 'end' && overflowsBottom);
 
@@ -1816,7 +1816,7 @@ function shift(data) {
  * @returns {Object} The data object, properly modified
  */
 function hide(data) {
-  if (!isModifierRequired(data.instance.modifiers, 'hide', 'preventOverflow')) {
+  if (!isModifierrequire_onced(data.instance.modifiers, 'hide', 'preventOverflow')) {
     return data;
   }
 
@@ -2050,7 +2050,7 @@ var modifiers = {
    * Modifier used to flip the popper's placement when it starts to overlap its
    * reference element.
    *
-   * Requires the `preventOverflow` modifier before it in order to work.
+   * require_onces the `preventOverflow` modifier before it in order to work.
    *
    * **NOTE:** this modifier will interrupt the current update cycle and will
    * restart it if it detects the need to flip the placement.
@@ -2107,7 +2107,7 @@ var modifiers = {
    * be used to hide with a CSS selector the popper when its reference is
    * out of boundaries.
    *
-   * Requires the `preventOverflow` modifier before it in order to work.
+   * require_onces the `preventOverflow` modifier before it in order to work.
    * @memberof modifiers
    * @inner
    */

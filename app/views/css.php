@@ -2,88 +2,110 @@
 <html>
 <head>
 <style>
-.item1 { grid-area: header; }
-.item2 { grid-area: menu; }
-.item3 { grid-area: main; }
-.item4 { grid-area: right; }
-.item5 { grid-area: footer; }
+* {
+  box-sizing: border-box;
+}
+a{
+  color: orange;
+}
+body {
+  font-family: Arial;
+  background: #f1f1f1;
+}
 
-.grid-container {
-  display: grid;
-  grid-template-areas:
-    'header header header header header header'
-    'menu main main main right right'
-    'menu footer footer footer footer footer';
-   grid-gap: 1px; 
-  /*background-color: #2196F3;*/
-  padding: 1px; 
+.header {
+   padding: 30px; 
+  text-align: center;
+  background: #fe5c50;
 }
-.left-button{
-   /* justify-content: left; */
-}
-.default-button{
-    /* justify-content: auto; */
-}
-.grid-container > .item1{
-    background-color: red ; 
-    height: 10%;
-}
-.grid-container > .item2 > .default-button{
-    
-    width: 100px;
-}
-.grid-container > div {
 
-  background-color: rgba(255, 255, 255, 0.8);
-  /* text-align: center; */
-  /*padding: 20px 0;*/
-  font-size: 11px;
+.header h1 {
+  font-size: 50px;
 }
+
+
+.leftcolumn {   
+  float: right;
+  width: 75%;
+}
+
+.rightcolumn {
+  float: left;
+  width: 25%;
+  background-color: #f1f1f1;
+}
+
+.itemmenu {
+  background-color: #c800b1;
+  width: 100%;
+  padding: 20px;
+}
+
+.menu {
+  background-color: #c800b1;
+}
+.publicidade {
+  background-color: #fedb2a;
+  height: 65%;
+}
+.conteudo {
+  background-color: lightgreen;
+  height: 100%;
+
+}
+
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.footer {
+  padding: 20px;
+  text-align: center;
+  background: #094f66;
+  margin-top: 20px;
+}
+
+
 </style>
-<link href="http://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
 </head>
 <body>
 
-
-<div class="grid-container">
-  <div class="item1">
-  <nav class="navbar navbar-expand-lg navbar-light bg-light ">
-
-    
-     <a class='navbar' href='#'></a>
-  <button class='navbar-toggler' type='button' data-toggle='collapse' data-target='#navbarTogglerDemo02' aria-controls='navbarTogglerDemo02' aria-expanded='false' aria-label='Toggle navigation'>
-    <span class='navbar-toggler-icon'></span>
-  </button>
-  <div class='collapse navbar-collapse' id='navbarTogglerDemo02'>
-    <ul class='navbar-nav mr-auto mt-2 mt-lg-0'>
-      <li class='nav-item active'>
-        <a class='nav-link' href='../../'>Login <span class='sr-only'>(current)</span></a>
-      </li>
-      
-      
-    </ul>
-    <form class='form-inline my-2 my-lg-0'>
-      <input class='form-control mr-sm-2' type='search' placeholder='Procurar produto'>
-      <button class='btn btn-outline-success my-2 my-sm-0' type='submit'>Procurar</button>
-    </form>
-  </div>
-</nav>
-</div>
+<div class="header">
+  <h1>Topo do Site</h1>
   
-  <div class="item2"><div class="w3-sidebar w3-bar-block" style="width:10%">
-  <a href="#" class="btn btn-primary default-button">HOME</a>
-  <a href="#" class="btn btn-primary default-button">CADASTRAS</a>
-  <a href="#" class="btn btn-primary default-button">FALE CONOSCO</a>
-  <a href="#" class="btn btn-primary default-button">SOBRE NOSSOS SERVIÇOS</a>
+</div>
 
+
+
+<div class="row">
+  <div class="leftcolumn">
+    <div class="conteudo">
+      <h2 align="center" style="height: 100%;">PRINCIPAL</h2>
+      
+    </div>
+    <div class="menu">
+      
+    </div>
+  </div>
+  <div class="rightcolumn">
+    <div class="menu">
+      <h2>MENU</h2>
+      <div class="itemmenu" style="height:100px;">HOME</div>
+      <div class="itemmenu" style="height:100px;">QUEM SOMOS</div>
+      <div class="itemmenu" style="height:100px;">CONTATO</div>
+    </div>
+    <div class="publicidade">
+      <h3>Publicidade</h3>
+      <div></div>
+    </div>
+    
+  </div>
 </div>
-</div>
-  <div class="item3">Main</div>  
-  <div class="item4">Right</div>
-  <div class="item5">Footer</div>
+
+<div class="footer">
+  <p>Rodapé do Site - <a href="">Desenvolvimento de Sistemas</a></p>
 </div>
 
 </body>
