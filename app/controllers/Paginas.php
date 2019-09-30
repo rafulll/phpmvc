@@ -101,8 +101,8 @@ class Paginas extends ControladorCore
     public function remover_item()
     {
         if (!isset($_POST['item']) || !isset($_POST['venda'])) {
-            echo "Não há item na venda pra deletar ou a Venda já foi paga.";
-
+            echo " <h1>Não há item na venda pra deletar ou a Venda já foi paga.</h1> ";
+           
             return;
         }
         $dados = array();
@@ -135,6 +135,7 @@ class Paginas extends ControladorCore
         $this->importDao('VendaDAO');
         $this->importModel("Usuario");
         $this->importModel("Produto");
+
         if (empty($_POST['cliente'])) {
             echo "<font color='red'><h1 align='center'>Selecione o Cliente</h1></font>";
             $dao = (new UserDAO())->buscarTodos();
@@ -147,9 +148,21 @@ class Paginas extends ControladorCore
             //$this->sendResponse('sessao', $_POST['session']);
             $this->renderView('nova_venda');
             return;
-        } else {
+        } elseif (isset($_POST['cliente'])) {
             echo " <font color='lightgreen'><h1 align='center'>Venda Criada, Selecione e continue!</h1> </font>";
             $nova_venda = (new VendaDAO())->inserir($_POST['cliente']);
+            $this->sendResponse('info', '');
+            $dao = (new UserDAO())->buscarTodos();
+            $prod = (new ProdutoDAO())->buscarTodos();
+            $venda  = (new VendaDAO())->buscarTodos();
+
+            $this->sendResponse('user', $dao);
+            $this->sendResponse('venda', $venda);
+            $this->sendResponse('produtos', $prod);
+            //$this->sendResponse('sessao', $_POST['session']);
+            $this->renderView('nova_venda');
+            return;
+        } else {
             $this->sendResponse('info', '');
             $dao = (new UserDAO())->buscarTodos();
             $prod = (new ProdutoDAO())->buscarTodos();

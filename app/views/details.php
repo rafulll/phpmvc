@@ -117,7 +117,7 @@
 
                 if (empty($dados['itens'])) { } else {
                     if ($v2 == 'Concluida') {
-                        echo "<input  class='btn-lg btn-alert' value='-' type='submit'> </form><table>";
+                        echo "<input disabled class='btn-lg btn-alert' value='-' type='submit'> </form><table>";
                     } elseif ($v2 == 'Pagamento Pendente') {
                         echo "</select>
 <input hidden type='hdden' name='venda' value='" . $v . "'>";
@@ -143,7 +143,7 @@
                 }
                 if ($v2 == 'Concluida') {
                     echo "
-    <input  type='submit' class='btn-lg btn-alert' value='+'> </form>";
+    <input disabled type='submit' class='btn-lg btn-alert' value='+'> </form>";
                 } elseif ($v2 == 'Pagamento Pendente') {
                     echo " <input name='venda' hidden type='number' value='" . $v . "'>
     <input type='submit' class='btn-lg btn-primary' value='+'> </form>";

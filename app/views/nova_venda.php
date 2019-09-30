@@ -55,7 +55,7 @@
 
 
         echo "<div style='height: 100%;'>";
-        echo "<form style='height: 100%;' action='/vendas/' class='form-control form-control-lg' method='POST'><h3>Nova Venda</h3>
+        echo "<form style='height: 100%;' action='/vendas/new' class='form-control form-control-lg' method='POST'><h3>Nova Venda</h3>
         <select class='form-control form-control-lg' name='cliente'>";
         foreach ($dados['user'] as $key => $value) {
 

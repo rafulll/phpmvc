@@ -1,6 +1,7 @@
 <html>
-    <head>
-    <?php 
+
+<head>
+    <?php
     echo "<link rel='icon' type='image/png' href='./images/icons/favicon.ico'/>
     <link rel='icon' type='image/png' href='./vendor/bootstrap/css/bootstrap.min.css'/>
     <link rel='icon' type='image/png' href='./fonts/font-awesome-4.7.0/css/font-awesome.min.css'/>
@@ -14,7 +15,8 @@
     <link rel='icon' type='image/png' href='./css/main.css'/>
     ";
     ?>
-        <title>Proferta</title>
-        <meta charset="utf-8">
-    </head>
-    <body>
+    <title>Proferta</title>
+    <meta charset="utf-8">
+</head>
+
+<body>
