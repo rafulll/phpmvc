@@ -21,15 +21,17 @@
   </style>
 
 </head>
-<body>
+<body >
 
 
 
 <div class="main">
 <div>
-<ul>
-    <li></li>
-</ul>
+
+   
+        
+    
+
 </div>
     <div>
 
@@ -56,14 +58,24 @@
     }
 
     foreach ($dados['venda'] as $key => $value) {
-       
+       if($value->getStatus()==1){
         echo "<h1>Dados da Venda</h1>   <tr>
         <td>".$value->getId()."</td>
         <td>".$value->getNome()."</td>
-        <td>".$value->getStatus()."</td>
+        <td style='background: lightgreen;'>".$value->getStatus()."</td>
         <td> R$ ".number_format((float)$valor_venda, 2, ',', '.')."</td>
         </tr>";
         $v=$value->getId();
+       }else{
+        echo "<h1>Dados da Venda</h1>   <tr>
+        <td>".$value->getId()."</td>
+        <td>".$value->getNome()."</td>
+        <td style='background-color: red;'>".$value->getStatus()."</td>
+        <td> R$ ".number_format((float)$valor_venda, 2, ',', '.')."</td>
+        </tr>";
+        $v=$value->getId();
+       }
+       
      
     }
    
@@ -97,7 +109,7 @@ echo "</select>
 if(empty($dados['itens'])){
 
 }else{
-    echo "<input value='Remover' type='submit'> </form><table>";
+    echo "<input class='btn-lg btn-warning' value='-' type='submit'> </form><table>";
 }
 
     foreach ($dados['itens'] as $key) {
@@ -116,10 +128,11 @@ foreach ($dados['prod'] as $produto) {
               ";
 }
 echo " <input name='venda' hidden type='number' value='".$v."'>
-<input type='submit' value='Adicionar'> </form>";
+<input type='submit' class='btn-lg btn-primary' value='+'> </form>";
 ?>
     </div>
     
     </div>
+    <a style='margin-top: 10px;' class='btn-lg btn-primary'href="/index">Inicio </a>
 </body>
 </html>

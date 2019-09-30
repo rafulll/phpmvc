@@ -23,13 +23,7 @@ class ItemVendaDAO extends DAO{
         if($i == 4){
 
         }
-       
-            
-           
-           
-            
-        
-           }
+    }
            
       
     $rq->execute();
