@@ -93,7 +93,7 @@ class Paginas extends ControladorCore {
     }
     public function remover_item(){
         if(!isset($_POST['item']) || !isset($_POST['venda'])){
-            echo "Não há item na venda pra deletar";
+            echo "Não há item na venda pra deletar ou a Venda já foi paga.";
             
             return;
         }
@@ -162,7 +162,7 @@ class Paginas extends ControladorCore {
 
     public function add_item(){
         if(!isset($_POST['item']) || !isset($_POST['venda'])){
-            echo "Não há itens para adicionar";
+            echo "<h1>Não há itens para adicionar ou a venda já foi paga.</h1>";
             return;
         }else{
             $this->importDao("ItemVendaDAO");
@@ -184,16 +184,56 @@ class Paginas extends ControladorCore {
         }
     }
     public function pagar(){
-        if(!isset($_POST['alt_venda'])){
-            echo "Como assim ? Traga dados...";
+        $this->importDao('VendaDAO');
+        $this->importDao('ItemVendaDAO');
+        $this->importDao('ProdutoDAO');
+        $this->importModel("Usuario");
+        $this->importModel("Produto");
+        $this->importModel("Item");
+        if(empty($_POST['alt_venda'])){
+            echo "<font color='lightgreen'><h1 align='center'>Como assim? Leve Dados! Selecione a venda ;)</h1> </font>";
+            
+            $venda = (new VendaDAO())->buscar($_POST['venda']);
+            $itens_venda = (new ItemVendaDAO())->buscar($_POST['venda']);
+            $prod = (new ProdutoDao())->buscarTodos();
+            $this->sendResponse('venda', $venda);
+            $this->sendResponse('itens', $itens_venda);
+            $this->sendResponse('prod', $prod);
+          
+            $this->renderView('details');
             return;
         }else{
             $do = null;
             $do = (new VendaDAO())->atualizar($_POST['alt_venda']);
             if($do == null){
                 $this->sendResponse('code', $do);
+            $venda = (new VendaDAO())->buscar($_POST['alt_venda']);
+            $itens_venda = (new ItemVendaDAO())->buscar($_POST['alt_venda']);
+            $prod = (new ProdutoDao())->buscarTodos();
+            $this->sendResponse('venda', $venda);
+            $this->sendResponse('itens', $itens_venda);
+            $this->sendResponse('prod', $prod);
+          
+            $this->renderView('details');
+            return;
             }
+            $venda = (new VendaDAO())->buscar($_POST['alt_venda']);
+            $itens_venda = (new ItemVendaDAO())->buscar($_POST['alt_venda']);
+            $prod = (new ProdutoDao())->buscarTodos();
+            $this->sendResponse('venda', $venda);
+            $this->sendResponse('itens', $itens_venda);
+            $this->sendResponse('prod', $prod);
+          
+            $this->renderView('details');
         }
+        $venda = (new VendaDAO())->buscar($_POST['alt_venda']);
+            $itens_venda = (new ItemVendaDAO())->buscar($_POST['alt_venda']);
+            $prod = (new ProdutoDao())->buscarTodos();
+            $this->sendResponse('venda', $venda);
+            $this->sendResponse('itens', $itens_venda);
+            $this->sendResponse('prod', $prod);
+          
+            $this->renderView('details');
     }
     public function newuser(){
         var_dump($_POST['name']);

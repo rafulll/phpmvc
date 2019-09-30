@@ -23,7 +23,10 @@ body{
 </head>
 <body>
 <div class="main" >
+<div><a href="/index"><button style='width: 100%;' class='btn-lg btn-primary'>Inicio
+</button></a><br>
 
+</div>
 <div style='height: 100%;'>
        
            

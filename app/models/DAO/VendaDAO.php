@@ -26,8 +26,9 @@ class VendaDAO extends DAO{
         
         }catch(Exception $e){
             echo $e->getMessage()."<br>Algum erro ocorreu ao tentar fazer a solicitação.";      
-            return;       
+            return null;       
         }
+        return "tudo ok";
     }
     public function excluir($id){
 
@@ -40,8 +41,8 @@ class VendaDAO extends DAO{
             'SELECT TV.id,TSV.nome as tnome,TU.nome, TV.usuario_cliente as UC, TV.data as data  FROM tb_venda TV 
             JOIN tb_status_venda TSV ON TSV.id = TV.tb_status_venda_id
             JOIN tb_usuario TU ON TV.usuario_cliente = TU.id
-            WHERE TV.id = ? AND TV.tb_status_venda_id = 2
-           ';
+            WHERE TV.id = ?';
+           
             $rq = $this->pdo->prepare($sql);
             $rq->bindValue(1, $id);
             $rq->execute();

@@ -8,7 +8,7 @@
 <style>
 .main{
     margin-top: 0%;
-    background: black;
+    background: darkgray;
     height: 100%;
     width:100%;
     display: flex; 
@@ -39,11 +39,11 @@
     height:100%;
 }
 .header{
-
+    
     text-align: center;
     height: 20%;
-    background: blue;
-    display: flex;
+    background: lightgray;
+    
 }
 .bottom{
     height: 20%;
@@ -53,7 +53,7 @@
 </head>
 <body>
     <div class='main'>
-        <div class='header'> Header</div>
+        <div class='header'><h1>Inicio</h1> </div>
         <div class='content'>
             <div class='dashboard'>
             <a href="/cadastro_prod"> <img class='item-menu' src="https://www.sigelite.com.br/img/SEOHomes/icon-item-controle-estoque.png" alt=""></a>
