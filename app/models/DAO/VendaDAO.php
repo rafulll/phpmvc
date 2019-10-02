@@ -39,7 +39,7 @@ class VendaDAO extends DAO
         try {
             //  //JOIN tb_item_venda TIV ON TIV.tb_venda_id = TV.id 
             $sql =
-                'SELECT TV.id,TSV.nome as tnome,TU.nome, TV.usuario_cliente as UC, TV.data as data  FROM tb_venda TV 
+            'SELECT TV.id,TSV.nome as tnome,TU.nome, TV.usuario_cliente as UC, TV.data as data  FROM tb_venda TV 
             JOIN tb_status_venda TSV ON TSV.id = TV.tb_status_venda_id
             JOIN tb_usuario TU ON TV.usuario_cliente = TU.id
             WHERE TV.id = ?';
@@ -66,7 +66,7 @@ class VendaDAO extends DAO
         try {
             //  //JOIN tb_item_venda TIV ON TIV.tb_venda_id = TV.id 
             $sql =
-                'SELECT TV.id,TSV.nome as tnome,TU.nome, TV.usuario_cliente as UC, TV.data as data  FROM tb_venda TV 
+            'SELECT TV.id,TSV.nome as tnome,TU.nome, TV.usuario_cliente as UC, TV.data as data  FROM tb_venda TV 
             JOIN tb_status_venda TSV ON TSV.id = TV.tb_status_venda_id
             JOIN tb_usuario TU ON TV.usuario_cliente = TU.id
             WHERE TV.tb_status_venda_id = 2 || TV.tb_status_venda_id = 1

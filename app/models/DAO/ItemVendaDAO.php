@@ -6,30 +6,51 @@ class ItemVendaDAO extends DAO
 {
     public function inserir($obj)
     {
-        //var_dump($obj);
+       
+       
+       // var_dump($obj);
         try {
 
             $sql = "INSERT INTO tb_item_venda (tb_venda_id, tb_preco_produto_id, quantidade) values (?,?,?)";
             $rq = $this->pdo->prepare($sql);
-
-            for ($i = 1; $i < 4; $i++) {
-
-                if ($i == 1) {
-                    $rq->bindValue($i, $obj[$i - 1]);
-                }
-                if ($i == 2) {
-                    $rq->bindValue($i, $obj[$i - 1]);
-                }
-                if ($i == 3) {
-
-                    $rq->bindValue($i, '1');
-                }
-                if ($i == 4) { }
+            $sql_sel_qtd = "SELECT tp.nome, tpp.quantidade FROM tb_preco_produto tpp JOIN tb_produto tp on tpp.tb_produto_id = tp.id WHERE tpp.tb_produto_id = ?";
+            $rq_qtd = $this->pdo->prepare($sql_sel_qtd);
+           
+            $rq_qtd->bindValue(1,$obj[1]);
+            $rq_qtd->execute();
+            $current_qtd = $rq_qtd->fetchAll();
+           
+               
+            foreach ($current_qtd as $key => $value) {
+               
+               // echo "<br>Quantidade do item selecionado: ".$value['quantidade'];
+                //echo "<br>Nova Quantidade ".($value['quantidade'] - $obj[2]);
+                $new_qtd = ($value['quantidade'] - $obj[2]);
+                $prodname = $value['nome'];
+                $qtd = $value['quantidade'];
             }
+            if($new_qtd < 0){
+                echo "Quantidade indisponível. :( Só temos  ".$qtd." ",$prodname;
+                return;
+            }
+            $sql_update_prod_qtd = "UPDATE tb_preco_produto SET quantidade = ? WHERE tb_produto_id = ?";
+            $rq_update_qtd  = $this->pdo->prepare($sql_update_prod_qtd);
+            $rq_update_qtd->bindValue(1,$new_qtd);
+            $rq_update_qtd->bindValue(2, $obj[1]);
+            $rq_update_qtd->execute();
+
+            $rq->bindValue(1, $obj[0]);
+            $rq->bindValue(2, $obj[1]);
+            $rq->bindValue(3, $obj[2]);
+             
+
+            
 
 
             $rq->execute();
-        } catch (Exception $e) {
+            //decrementar em tb_preco_produto
+            echo $obj[1];
+        }catch (Exception $e) {
             echo $e->getMessage();
         }
     }

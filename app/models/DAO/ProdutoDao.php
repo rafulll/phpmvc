@@ -25,14 +25,14 @@ class ProdutoDao extends Dao
     {
         $produtos = array();
         try {
-            $sql = "SELECT tb_preco_produto.id , tb_produto.nome FROM tb_preco_produto JOIN tb_produto ON tb_produto.id = tb_preco_produto.tb_produto_id WHERE tb_preco_produto.ativo = 1";
+            $sql = "SELECT tb_preco_produto.id ,tb_preco_produto.quantidade, tb_preco_produto.preco_venda, tb_produto.nome FROM tb_preco_produto JOIN tb_produto ON tb_produto.id = tb_preco_produto.tb_produto_id WHERE tb_preco_produto.ativo = 1 AND tb_preco_produto.quantidade > 0";
 
             $requisicao = $this->pdo->prepare($sql);
             $requisicao->execute();
             $resultado = $requisicao->fetchAll();
 
             foreach ($resultado as $r) {
-                array_push($produtos, new Produto($r['id'], $r['nome']));
+                array_push($produtos, new Produto($r['id'], $r['nome'], $r['preco_venda'], $r['quantidade']));
             }
         } catch (Exception $ex) { }
 
@@ -48,7 +48,7 @@ class ProdutoDao extends Dao
             echo 'Traga dados.';
             return;
         } else {
-            // echo $obj;
+            //echo $obj;
             $sql = "SELECT nome FROM tb_produto WHERE nome = ?";
             $rq = $this->pdo->prepare($sql);
             $rq->bindValue(1, $obj[0]);
@@ -61,9 +61,10 @@ class ProdutoDao extends Dao
                 try {
                     $sql_i = "INSERT INTO tb_produto (nome) VALUES (:nome)";
                     $rq_i = $this->pdo->prepare($sql_i);
+                    echo $obj[0];
                     $rq_i->bindValue(":nome", $obj[0]);
                     $rq_i->execute();
-                    sleep(1);
+                    sleep(3);
                     $sql2 = "SELECT nome, id FROM tb_produto WHERE nome = :nome";
                     $rq2 = $this->pdo->prepare($sql2);
                     $rq2->bindValue(':nome', $obj[0]);
@@ -79,19 +80,25 @@ class ProdutoDao extends Dao
                         foreach ($data as $key => $value) {
                             $id = $value['id'];
                             echo $value['id'];
+                            
                         }
                         $sql_ii = "INSERT INTO tb_preco_produto (tb_produto_id, preco_compra, preco_venda, quantidade, ativo)
                                     VALUES (?,?,?,?,?)";
                         $pc = $obj[1];
                         $pv = $obj[2];
+                        $qtd = $obj[3];
+                       
+                     
                         $rq3 = $this->pdo->prepare($sql_ii);
                         //echo $pc ." - ".$pv;
                         //var_dump($obj[1]);
                         //var_dump($obj[2]);
+                        
+
                         $rq3->bindValue(1, $id);
                         $rq3->bindValue(2, $pc);
                         $rq3->bindValue(3, $pv);
-                        $rq3->bindValue(4, 1);
+                        $rq3->bindValue(4,$qtd);
                         $rq3->bindValue(5, 1);
 
                         $rq3->execute();

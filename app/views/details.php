@@ -62,7 +62,7 @@
 
                 foreach ($dados['venda'] as $key => $value) {
                     $v = $value->getId();
-                    if ($value->getStatus() == 'Concluida') {
+                    if ($value->getStatus() == 'Concluido') {
                         echo "<h1>Dados da Venda</h1>   <tr>
         <td>" . $value->getId() . "</td>
         <td>" . $value->getNome() . "</td>
@@ -104,11 +104,15 @@
                 if (empty($dados['itens'])) {
                     echo "<h1>Itens na Venda</h1>";
                     echo "Não há itens na venda.";
+                    
                 } else {
-                    echo "<h1>Itens na Venda</h1><form method='post' action='/vendas/details/remover_item'><select name='item'>";
                     foreach ($dados['itens'] as $key) {
-                        echo "<option name='item' value='" . $key->getId() . "'>  " . $key->getId() . "
-        " . $key->getNome() . "</option>
+                        $qtd = $key->getQuantidade();
+                    }
+                    echo "<h1>Itens na Venda</h1><form method='post' action='/vendas/details/remover_item?qtd=".$qtd."'><select name='item'>";
+                    foreach ($dados['itens'] as $key) {
+                        echo "<option name='item' value='" . $key->getId() . "'> < ID: " . $key->getId() . " |Nome:
+        " . $key->getNome() . " |QTD: ".$key->getQuantidade()." ></option>
       
        ";
                     }
@@ -117,18 +121,28 @@
 
                 if (empty($dados['itens'])) { } else {
                     if ($v2 == 'Concluida') {
-                        echo "<input disabled class='btn-lg btn-alert' value='-' type='submit'> </form><table>";
+                        
+                        echo "<input disabled class='btn-lg btn-alert' value='-' type='submit'> </form>";
                     } elseif ($v2 == 'Pagamento Pendente') {
+                        
                         echo "</select>
 <input hidden type='hdden' name='venda' value='" . $v . "'>";
-                        echo "<input class='btn-lg btn-warning' value='-' type='submit'> </form><table>";
+
+                        echo "<input class='btn-lg btn-warning' value='-' type='submit'> </form><table border='1'>
+                        ";
+                        echo " <tr>
+                <td>  ID</td>
+    <td>  NOME</td>
+    <td>  QTD </td>
+                </tr>";
                     }
                 }
-
+                
                 foreach ($dados['itens'] as $key) {
-                    echo "<tr>
-        <td>" . $key->getId() . "</td>
-        <td>" . $key->getNome() . "</td>
+                    echo " <tr>
+        <td>  " . $key->getId() . "</td>
+        <td>  " . $key->getNome() . "</td>
+        <td>  " . $key->getQuantidade() . "</td>
 </tr>";
                 }
                 echo "</table></div>
@@ -136,7 +150,7 @@
     <select name='item'>";
                 foreach ($dados['prod'] as $produto) {
                     echo "<tr>
-            <option name='item' value='" . $produto->getId() . "'>" . $produto->getId() . " - " . $produto->getNome() . "</option>
+            <option name='item' value='" . $produto->getId() . "'>" . $produto->getId() . " - " . $produto->getNome() ." - ".$produto->getQtd(). " - R$ ".number_format((float) $produto->getPreco(), 2 ,',','.')."</option>
            
            
               ";
@@ -146,6 +160,7 @@
     <input disabled type='submit' class='btn-lg btn-alert' value='+'> </form>";
                 } elseif ($v2 == 'Pagamento Pendente') {
                     echo " <input name='venda' hidden type='number' value='" . $v . "'>
+                    <input type='number' class='form-control-lg' name='qtd'>
     <input type='submit' class='btn-lg btn-primary' value='+'> </form>";
                 }
 

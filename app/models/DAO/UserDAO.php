@@ -65,11 +65,13 @@ class UserDAO extends Dao
                 }
             } else {
                 echo "não há usuarios.";
+                return;
             }
-            return $usuarios;
+           
         } catch (PDOException $e) {
             $e->getMessage();
         }
+        return $usuarios;
     }
 
     public function excluir($id)
