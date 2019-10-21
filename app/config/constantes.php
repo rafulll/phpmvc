@@ -4,4 +4,4 @@
  */
 
 define("PATH_APP", dirname(__DIR__));
-define("BASE_URL", "http://localhost/");
+define("BASE_URL", "http://onairamapp.herokuapp.com/");
