@@ -55,13 +55,27 @@ class ItemVendaDAO extends DAO
         }
     }
     public function atualizar($obj)
-    { }
+    { 
+      
+    }
     public function excluir($obj)
     {
         $sql = "DELETE from tb_item_venda WHERE tb_item_venda.id = ? AND tb_item_venda.tb_venda_id = ?";
         $rq = $this->pdo->prepare($sql);
-
-
+        $sql_select_actual_qtd = "SELECT quantidade FROM tb_venda_produto WHERE id = ?";
+        $stm_select_actual_qtd = $this->pdo->prepare($sql_select_actual_qtd);
+        $stm_select_actual_qtd->bindValue(1, $obj[0]);
+        $stm_select_actual_qtd->execute();
+        $sql2 = "UPDATE tb_preco_protudo SET quantidade = ? WHERE id = ?";
+        $stm = $this->pdo->prepare($sql2);
+        $actual_qtd = $stm_select_actual_qtd->fetchAll();
+        foreach ($actual_qtd as $key => $value) {
+            $new_qtd = $value['quantidade'];
+            $stm->bindValue(1, ($new_qtd+$obj[2]));
+        }
+       
+        $stm->bindValue(2, $obj[0]);
+        $stm->execute();
 
         $rq->bindValue(1, $obj[0]);
 

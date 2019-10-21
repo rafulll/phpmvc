@@ -22,7 +22,7 @@ class Paginas extends ControladorCore
     }
     public function add_prod()
     {
-        if (!isset($_POST['nome']) || !isset($_POST['valor_compra']) || !isset($_POST['valor_venda']) || !isset($_POST['quantidade'])) {
+        if (!isset($_POST['nome']) || !isset($_POST['valor_compra']) || !isset($_POST['valor_venda'])) {
 
             $this->renderView('cadastro_produto');
             return;
@@ -39,23 +39,23 @@ class Paginas extends ControladorCore
             $this->renderView('cadastro_produto');
         }
     }
-    // public function vProdutos()
-    // {
+    public function vProdutos()
+    {
 
-    //     $this->importModel("Produto");
-    //     $this->importDao("ProdutoDao");
-    //     $this->importDao("VendaDAO");
+        $this->importModel("Produto");
+        $this->importDao("ProdutoDao");
+        $this->importDao("VendaDAO");
 
 
-    //     $venda = (new VendaDAO())->buscarTodos();
-    //     $produtos = (new ProdutoDao())->buscarTodos();
-    //     var_dump($produtos);
-    //     //$this->sendResponse("usuario", $_POST['cliente']);
-    //     $this->sendResponse("produtos", $produtos);
-    //     $this->sendResponse("venda", $venda);
+        $venda = (new VendaDAO())->buscarTodos();
+        $produtos = (new ProdutoDao())->buscarTodos();
+        var_dump($produtos);
+        //$this->sendResponse("usuario", $_POST['cliente']);
+        $this->sendResponse("produtos", $produtos);
+        $this->sendResponse("venda", $venda);
 
-    //     $this->renderView('vprod');
-    // }
+        $this->renderView('vprod');
+    }
     public function details()
     {
         $this->importDao("ProdutoDao");
@@ -101,14 +101,15 @@ class Paginas extends ControladorCore
     }
     public function remover_item()
     {
-        if (!isset($_POST['item']) || !isset($_POST['venda'])) {
+        if (!isset($_POST['item']) || !isset($_POST['venda']) || !empty($_GET['qtd'])) {
             echo " <h1>Não há item na venda pra deletar ou a Venda já foi paga.</h1> ";
-           
             return;
         }
+        echo $_GET['qtd'];
         $dados = array();
         array_push($dados, $_POST['item']);
         array_push($dados, $_POST['venda']);
+        array_push($dados, $_GET['qtd']);
         $this->importDao("ItemVendaDAO");
         $this->importDao("UserDAO");
         $this->importDao("ProdutoDAO");
@@ -177,9 +178,11 @@ class Paginas extends ControladorCore
             return;
         }
     }
+
+
     public function add_item()
     {
-        if (!isset($_POST['item']) || !isset($_POST['venda']) || empty($_POST['qtd'])) {
+        if (!isset($_POST['item']) || !isset($_POST['venda'])) {
             echo "<h1>Não há itens para adicionar ou a venda já foi paga.</h1>";
             return;
         } else {
@@ -187,7 +190,6 @@ class Paginas extends ControladorCore
             $req = array();
             array_push($req, $_POST['venda']);
             array_push($req, $_POST['item']);
-            array_push($req, $_POST['qtd']);
             $prod = (new ItemVendaDAO())->inserir($req);
             $this->importDao("ProdutoDao");
             $this->importDao("VendaDAO");
@@ -276,66 +278,66 @@ class Paginas extends ControladorCore
 
         $dao = (new UserDAO())->inserir($obj);
     }
-    // public function authenticate()
-    // {
-    //     if (!isset($_POST['username']) || !isset($_POST['password'])) {
-    //         echo "Necessario fazer login primeiro.";
-    //         return;
-    //     }
-    //     session_start();
+    public function authenticate()
+    {
+        if (!isset($_POST['username']) || !isset($_POST['password'])) {
+            echo "Necessario fazer login primeiro.";
+            return;
+        }
+        session_start();
 
-    //     if (($_POST['username'] == "" || $_POST['username'] == null) || ($_POST['password'] == "" || $_POST['password'] == null)) {
-    //         //session_destroy();
-    //         echo "Digite algo nos campos<br> <a href='javascript:history.go(-1)'>voltar</a>";
-    //         return;
-    //     } else {
-    //         $_SESSION['id'] = $_POST['username'];
+        if (($_POST['username'] == "" || $_POST['username'] == null) || ($_POST['password'] == "" || $_POST['password'] == null)) {
+            //session_destroy();
+            echo "Digite algo nos campos<br> <a href='javascript:history.go(-1)'>voltar</a>";
+            return;
+        } else {
+            $_SESSION['id'] = $_POST['username'];
 
-    //         $this->importModel("Usuario");
-    //         $this->importDao('UserDAO');
-    //         $dao = new UserDAO();
-
-
-
-    //         //code...
+            $this->importModel("Usuario");
+            $this->importDao('UserDAO');
+            $dao = new UserDAO();
 
 
-    //         $user = $dao->login($_POST['username'], $_POST['password']);
-    //         if (!$user) {
-    //             echo " :( alguma coisa esta errada.";
-    //             return;
-    //         }
-    //         if (isset($user[0]['nome'])) {
-    //             $this->listar();
-    //             // $this->sendResponse("produtos", $produtos);
-    //             $this->sendResponse("user", $user[0]['nome']);
-    //             $this->renderView("v_produtos");
-    //         } else {
-    //             $this->listar();
-    //             $this->sendResponse("user", $user);
-    //             $this->renderView("v_produtos");
-    //         }
-    //     }
-    // }
 
-    // public function listar()
-    // {
-
-    //     //if(!isset($_SESSION['id'])){
-    //     //    echo "Precisa fazer login<br> <a href='javascript:history.go(-1)'>Voltar</a>";
-    //     //}else{
-    //     $this->importModel("Produto");
-    //     $this->importDao("ProdutoDao");
-
-    //     $produtos = (new ProdutoDao())->buscarTodos();
-
-    //     $this->sendResponse("produtos", $produtos);
-    //     $this->renderView("v_produtos");
-    //     //}
+            //code...
 
 
-    //     //echo "<pre>".print_r($produtos, true)."</pre>";  
-    // }
+            $user = $dao->login($_POST['username'], $_POST['password']);
+            if (!$user) {
+                echo " :( alguma coisa esta errada.";
+                return;
+            }
+            if (isset($user[0]['nome'])) {
+                $this->listar();
+                // $this->sendResponse("produtos", $produtos);
+                $this->sendResponse("user", $user[0]['nome']);
+                $this->renderView("v_produtos");
+            } else {
+                $this->listar();
+                $this->sendResponse("user", $user);
+                $this->renderView("v_produtos");
+            }
+        }
+    }
+
+    public function listar()
+    {
+
+        //if(!isset($_SESSION['id'])){
+        //    echo "Precisa fazer login<br> <a href='javascript:history.go(-1)'>Voltar</a>";
+        //}else{
+        $this->importModel("Produto");
+        $this->importDao("ProdutoDao");
+
+        $produtos = (new ProdutoDao())->buscarTodos();
+
+        $this->sendResponse("produtos", $produtos);
+        $this->renderView("v_produtos");
+        //}
+
+
+        //echo "<pre>".print_r($produtos, true)."</pre>";  
+    }
 
     public function detalharProduto()
     {
@@ -351,14 +353,14 @@ class Paginas extends ControladorCore
             echo "Informe todos os campos obrigatórios...";
         }
     }
-    // public function css()
-    // {
-    //     $this->renderView("css");
-    // }
-    // public function sobre()
-    // {
-    //     echo __FUNCTION__;
-    // }
+    public function css()
+    {
+        $this->renderView("css");
+    }
+    public function sobre()
+    {
+        echo __FUNCTION__;
+    }
 
 
     public function erro404()
